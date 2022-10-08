@@ -1,16 +1,9 @@
 const userRouter = require('express').Router();
+const { validateUserId, validateProfileUpdate } = require('../middlewares/requestValidation');
+const { getUserInfo, profileUpdate } = require('../controllers/users');
 
-// Импортировать контролеры
-const {
-  getUserInfo,
-  profileUpdate,
-} = require('../controllers/users');
-
-// возвращает информацию о пользователе (email и имя)
-userRouter.get('/users/me', getUserInfo);
-
-// обновляет информацию о пользователе (email и имя)
-userRouter.patch('/users/me', profileUpdate);
+userRouter.get('/users/me', validateUserId, getUserInfo);
+userRouter.patch('/users/me', validateProfileUpdate, profileUpdate);
 
 module.exports = {
   userRouter,

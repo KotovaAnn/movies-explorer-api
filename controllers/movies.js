@@ -3,7 +3,6 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const ForbiddenError = require('../errors/forbidden-err');
 
-// возвращает все сохранённые текущим  пользователем фильмы
 const getSavedMovies = async (req, res, next) => {
   try {
     const movies = await Movie.find({});
@@ -13,8 +12,6 @@ const getSavedMovies = async (req, res, next) => {
   }
 };
 
-// создаёт фильм с телoм (country, director, duration, year,
-// description, image, trailer, nameRU, nameEN и thumbnail, movieId)
 const createMovie = async (req, res, next) => {
   try {
     const owner = req.user._id;
@@ -54,7 +51,6 @@ const createMovie = async (req, res, next) => {
   }
 };
 
-// удаляет сохранённый фильм по id
 const deleteMovieById = async (req, res, next) => {
   const { movieId } = req.params;
   const userId = req.user._id;

@@ -26,7 +26,9 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле "image" должно быть заполнено'],
     validate: {
-      validator: validator.isURL,
+      validator(v) {
+        return validator.isURL(v);
+      },
       message: 'Ошибка: невалидный URL',
     },
   },
@@ -34,7 +36,9 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле "trailerLink" должно быть заполнено'],
     validate: {
-      validator: validator.isURL,
+      validator(v) {
+        return validator.isURL(v);
+      },
       message: 'Ошибка: невалидная ссылка на трэйлер',
     },
   },
@@ -42,19 +46,20 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле "thumbnail" должно быть заполнено'],
     validate: {
-      validator: validator.isURL,
+      validator(v) {
+        return validator.isURL(v);
+      },
       message: 'Ошибка: невалидная ссылка на минипостер',
     },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: true,
+    required: [true, 'Поле "owner" должно быть заполнено'],
   },
   movieId: {
-    type: mongoose.Schema.Types.ObjectId,
-    // ref: MoviesExplorer,
-    required: true,
+    type: String,
+    required: [true, 'Поле "movieId" должно быть заполнено'],
   },
   nameRU: {
     type: String,
