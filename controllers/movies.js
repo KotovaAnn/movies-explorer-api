@@ -4,8 +4,9 @@ const BadRequestError = require('../errors/bad-request-err');
 const ForbiddenError = require('../errors/forbidden-err');
 
 const getSavedMovies = async (req, res, next) => {
+  const owner = req.user._id;
   try {
-    const movies = await Movie.find({});
+    const movies = await Movie.find({ owner });
     return res.send(movies);
   } catch (err) {
     return next(err);
@@ -22,7 +23,7 @@ const createMovie = async (req, res, next) => {
       year,
       description,
       image,
-      trailer,
+      trailerLink,
       nameRU,
       nameEN,
       thumbnail,
@@ -35,7 +36,7 @@ const createMovie = async (req, res, next) => {
       year,
       description,
       image,
-      trailer,
+      trailerLink,
       nameRU,
       nameEN,
       thumbnail,
@@ -63,7 +64,7 @@ const deleteMovieById = async (req, res, next) => {
     if (!movie.owner.equals(userId)) {
       return next(new ForbiddenError('Ошибка прав доступа'));
     }
-    await Movie.remove();
+    await movie.remove();
     return res.send({ message: 'Фильм успешно удален' });
   } catch (err) {
     if (err.name === 'CastError') {

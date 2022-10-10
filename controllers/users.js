@@ -39,6 +39,9 @@ const profileUpdate = async (req, res, next) => {
     if (err.name === 'ValidationError') {
       return next(new BadRequestError('Данные пользователя переданы некорректно'));
     }
+    if (err.name === 'MongoServerError') {
+      return next(new ConflictError('Запрос не может быть выполнен из-за конфликтного обращения к ресурсу'));
+    }
     return next(err);
   }
 };
