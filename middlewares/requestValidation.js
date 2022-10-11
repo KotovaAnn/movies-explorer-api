@@ -1,9 +1,10 @@
 const { celebrate, Joi, CelebrateError } = require('celebrate');
 const isURL = require('validator/lib/isURL');
+const { NOT_URL_ADRESS } = require('../utils/constants');
 
 const urlValidator = (link) => {
   if (!isURL(link)) {
-    throw new CelebrateError(`${link} - не URL адрес`);
+    throw new CelebrateError(`${link} - ${NOT_URL_ADRESS}`);
   }
   return link;
 };
@@ -46,7 +47,7 @@ const validateCreateMovie = celebrate({
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
     image: Joi.string().required().custom(urlValidator),
-    trailer: Joi.string().required().custom(urlValidator),
+    trailerLink: Joi.string().required().custom(urlValidator),
     thumbnail: Joi.string().required().custom(urlValidator),
     movieId: Joi.number().required(),
   }),

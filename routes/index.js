@@ -5,6 +5,7 @@ const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/not-found-err');
 const { login, createUser, signout } = require('../controllers/users');
 const { validateLogin, validateCreateUser } = require('../middlewares/requestValidation');
+const { NOT_FOUND_ERROR } = require('../utils/constants');
 
 router.post('/signup', validateCreateUser, createUser);
 router.post('/signin', validateLogin, login);
@@ -15,7 +16,7 @@ router.use(movieRouter);
 router.get('/signout', signout);
 
 router.use((req, res, next) => {
-  next(new NotFoundError('Код ответа: 404. Такой страницы не существует'));
+  next(new NotFoundError(NOT_FOUND_ERROR));
 });
 
 module.exports = router;

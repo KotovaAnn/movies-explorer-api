@@ -8,13 +8,21 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const UnauthorizedError = require('../errors/unauthorized-err');
 const ConflictError = require('../errors/conflict-err');
+const {
+  NOT_FOUND_USER,
+  BAD_REQUEST_ERROR,
+  CONFLICT_ERROR,
+  CONFLICT_ERROR_EMAIL_ALREADY_EXIST,
+  NOT_AUTH_ERROR_WRONG_EMAIL_PASSWORD,
+  SIGNOUT_MESSAGE,
+} = require('../utils/constants');
 
 const getUserInfo = async (req, res, next) => {
   const userId = req.user._id;
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return next(new NotFoundError('Такого пользователя не существует'));
+      return next(new NotFoundError(NOT_FOUND_USER));
     }
     return res.send(user);
   } catch (err) {
@@ -32,15 +40,15 @@ const profileUpdate = async (req, res, next) => {
       { new: true, runValidators: true },
     );
     if (!user) {
-      return next(new NotFoundError('Такого пользователя не существует'));
+      return next(new NotFoundError(NOT_FOUND_USER));
     }
     return res.send(user);
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return next(new BadRequestError('Данные пользователя переданы некорректно'));
+      return next(new BadRequestError(BAD_REQUEST_ERROR));
     }
     if (err.name === 'MongoServerError') {
-      return next(new ConflictError('Запрос не может быть выполнен из-за конфликтного обращения к ресурсу'));
+      return next(new ConflictError(CONFLICT_ERROR));
     }
     return next(err);
   }
@@ -62,10 +70,10 @@ const createUser = async (req, res, next) => {
     return res.status(200).send(user);
   } catch (err) {
     if (err.code === 11000) {
-      return next(new ConflictError('Пользователь с таким email уже существует'));
+      return next(new ConflictError(CONFLICT_ERROR_EMAIL_ALREADY_EXIST));
     }
     if (err.name === 'ValidationError') {
-      return next(new BadRequestError('Ошибка в запросе'));
+      return next(new BadRequestError(BAD_REQUEST_ERROR));
     }
     return next(err);
   }
@@ -76,11 +84,11 @@ const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-      return next(new UnauthorizedError('Неправильные почта или пароль'));
+      return next(new UnauthorizedError(NOT_AUTH_ERROR_WRONG_EMAIL_PASSWORD));
     }
     const isUserValid = await bcrypt.compare(password, user.password);
     if (!isUserValid) {
-      return next(new UnauthorizedError('Неправильные почта или пароль'));
+      return next(new UnauthorizedError(NOT_AUTH_ERROR_WRONG_EMAIL_PASSWORD));
     }
     const token = jwt.sign(
       { _id: user._id },
@@ -106,7 +114,7 @@ const login = async (req, res, next) => {
 const signout = async (res, next) => {
   try {
     res.clearCookie('jwt');
-    return res.send({ message: 'Выход' });
+    return res.send({ message: SIGNOUT_MESSAGE });
   } catch (err) {
     return next(err);
   }
