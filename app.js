@@ -13,7 +13,6 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const {
   MONGO_DB_URL,
   PORT_NUMBER,
-  ALLOWED_CORS,
   SERVER_CRASH,
   INTERNAL_SERVER_ERROR,
 } = require('./utils/constants');
@@ -27,7 +26,11 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ALLOWED_CORS,
+    origin: [
+      'http://localhost:3000',
+      'http://kot-movies-explore.nomoredomains.icu/',
+      'https://kot-movies-explore.nomoredomains.icu/',
+    ],
     credentials: true,
   }),
 );
