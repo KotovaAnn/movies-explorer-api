@@ -102,7 +102,6 @@ const login = async (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
         sameSite: 'Strict',
-        secure: true,
       },
     );
     return res.send(user);
