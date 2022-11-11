@@ -111,13 +111,9 @@ const login = async (req, res, next) => {
   }
 };
 
-const signout = async (res, next) => {
-  try {
-    res.clearCookie('jwt');
-    return res.send({ message: SIGNOUT_MESSAGE });
-  } catch (err) {
-    return next(err);
-  }
+const signout = async (req, res, next) => {
+  res.clearCookie('jwt');
+  return res.status(200).send({ message: SIGNOUT_MESSAGE });
 };
 
 module.exports = {
