@@ -111,7 +111,7 @@ const login = async (req, res, next) => {
   }
 };
 
-const signout = async (res, next) => {
+const signout = async (req, res, next) => {
   try {
     res.clearCookie('jwt');
     return res.send({ message: SIGNOUT_MESSAGE });
