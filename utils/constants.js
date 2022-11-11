@@ -1,5 +1,5 @@
 const MONGO_DB_URL = 'mongodb://localhost:27017/moviesdb';
-const PORT_NUMBER = 4000;
+const PORT_NUMBER = 3000;
 const ALLOWED_CORS = [
   'http://kot-movies-explore.nomoredomains.icu/',
   'http://localhost:3000',
