@@ -101,8 +101,7 @@ const login = async (req, res, next) => {
       {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
-        sameSite: 'none',
-        secure: true,
+        sameSite: true,
       },
     );
     return res.send(user);
@@ -111,7 +110,7 @@ const login = async (req, res, next) => {
   }
 };
 
-const signout = async (req, res, next) => {
+const signout = async (req, res) => {
   res.clearCookie('jwt');
   return res.status(200).send({ message: SIGNOUT_MESSAGE });
 };
