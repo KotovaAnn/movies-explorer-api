@@ -28,8 +28,8 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'http://kot-movies-explore.nomoredomains.icu/',
-      'https://kot-movies-explore.nomoredomains.icu/',
+      'http://kot-movies-explore.nomoredomains.icu',
+      'https://kot-movies-explore.nomoredomains.icu',
     ],
     credentials: true,
   }),
